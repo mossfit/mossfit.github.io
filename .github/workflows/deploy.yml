@@ -3,14 +3,16 @@ name: Deploy Portfolio
 on:
   push:
     branches:
-      - main  
+      - main
 
 permissions:
-  contents: write 
+  contents: write
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Silences the deprecation warning
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -18,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24 # Upgraded to the future-proof version
           cache: 'npm'
 
       - name: Install Dependencies
@@ -30,5 +32,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist 
+          folder: dist
           branch: gh-pages
